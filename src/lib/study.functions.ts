@@ -22,7 +22,7 @@ Return ONLY valid JSON matching this exact shape (no markdown fences, no comment
       model: gateway("google/gemini-2.5-flash"),
       prompt,
     });
-    let questions: unknown = [];
+    let questions: unknown[] = [];
     try {
       const cleaned = text.replace(/```json\s*|\s*```/g, "").trim();
       const parsed = JSON.parse(cleaned);
@@ -32,7 +32,7 @@ Return ONLY valid JSON matching this exact shape (no markdown fences, no comment
     }
     const { data: row, error } = await context.supabase
       .from("quizzes")
-      .insert({ user_id: context.userId, topic: data.topic, questions })
+      .insert({ user_id: context.userId, topic: data.topic, questions: questions as never })
       .select("id,topic,questions,created_at")
       .single();
     if (error) throw new Error(error.message);
@@ -72,7 +72,7 @@ Return ONLY valid JSON (no fences, no commentary) shaped as:
       model: gateway("google/gemini-2.5-flash"),
       prompt,
     });
-    let plan: unknown = {};
+    let plan: Record<string, unknown> = {};
     try {
       const cleaned = text.replace(/```json\s*|\s*```/g, "").trim();
       plan = JSON.parse(cleaned);
@@ -81,7 +81,7 @@ Return ONLY valid JSON (no fences, no commentary) shaped as:
     }
     const { data: row, error } = await context.supabase
       .from("timetables")
-      .insert({ user_id: context.userId, title: data.goal, plan })
+      .insert({ user_id: context.userId, title: data.goal, plan: plan as never })
       .select("id,title,plan,created_at")
       .single();
     if (error) throw new Error(error.message);
