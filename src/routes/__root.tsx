@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "StudyMate AI — Your smart learning companion" },
-      { name: "description", content: "StudyMate AI helps students learn faster with AI tutoring, note summaries, quizzes, flashcards, mind maps, study plans, and code help." },
+      { title: "StudyMate AI — Your Smart Learning Companion" },
+      { name: "description", content: "Ask questions, summarize notes, generate quizzes, create flashcards, plan your studies, and learn smarter with AI." },
       { name: "author", content: "StudyMate AI" },
-      { property: "og:title", content: "StudyMate AI — Your smart learning companion" },
-      { property: "og:description", content: "AI tutoring, summaries, quizzes, flashcards, mind maps, and study planning in one platform." },
+      { property: "og:title", content: "StudyMate AI — Your Smart Learning Companion" },
+      { property: "og:description", content: "Ask questions, summarize notes, generate quizzes, create flashcards, plan your studies, and learn smarter with AI." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "StudyMate AI — Your Smart Learning Companion" },
+      { name: "twitter:description", content: "Ask questions, summarize notes, generate quizzes, create flashcards, plan your studies, and learn smarter with AI." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b86f64e7-6011-4d63-833b-6c9a55d73527/id-preview-f964f86c--6f5b2cce-1c0f-4a67-8a0d-c393619b7654.lovable.app-1784956270986.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b86f64e7-6011-4d63-833b-6c9a55d73527/id-preview-f964f86c--6f5b2cce-1c0f-4a67-8a0d-c393619b7654.lovable.app-1784956270986.png" },
     ],
     links: [
       {

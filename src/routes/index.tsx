@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
       { title: "StudyMate AI — Your Smart Learning Companion" },
       { name: "description", content: "Ask questions, summarize notes, generate quizzes, create flashcards, plan your studies, and learn smarter with AI." },
       { property: "og:title", content: "StudyMate AI — Your Smart Learning Companion" },
-      { property: "og:description", content: "AI tutoring, notes, quizzes, flashcards, mind maps and study plans in one calm, modern app." },
+      { property: "og:description", content: "Ask questions, summarize notes, generate quizzes, create flashcards, plan your studies, and learn smarter with AI." },
     ],
   }),
   component: Landing,
