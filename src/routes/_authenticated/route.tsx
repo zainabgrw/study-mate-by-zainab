@@ -1,8 +1,12 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ThemePicker } from "@/components/theme-picker";
 import { supabase } from "@/integrations/supabase/client";
+import { readProfile } from "@/lib/profile";
+import { installGlobalClickSound } from "@/lib/sound";
+import { Wordmark } from "@/components/logo";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -15,15 +19,25 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthedLayout() {
+  const navigate = useNavigate();
+  const path = useRouterState({ select: (r) => r.location.pathname });
+
+  useEffect(() => installGlobalClickSound(), []);
+
+  useEffect(() => {
+    if (path === "/onboarding") return;
+    if (!readProfile()) navigate({ to: "/onboarding" });
+  }, [path, navigate]);
+
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
+      <div className="flex min-h-screen w-full bg-pastel">
         <AppSidebar />
         <div className="flex flex-1 flex-col">
-          <header className="flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur">
+          <header className="flex h-14 items-center justify-between border-b bg-background/60 px-4 backdrop-blur">
             <div className="flex items-center gap-2">
               <SidebarTrigger />
-              <span className="text-sm font-medium text-muted-foreground">Study Buddy</span>
+              <Wordmark className="text-sm" />
             </div>
             <ThemePicker />
           </header>

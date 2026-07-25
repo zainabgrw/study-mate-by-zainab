@@ -1,7 +1,10 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { MessageSquare, Plus, Trash2, BrainCircuit, CalendarDays, LogOut } from "lucide-react";
+import {
+  MessageSquare, Plus, Trash2, BrainCircuit, CalendarDays, LogOut,
+  Home, FileText, Layers, Network, Lightbulb, Code2, Settings as SettingsIcon,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { createThread, deleteThread, listThreads } from "@/lib/threads.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Logo, Wordmark } from "@/components/logo";
 
 export function AppSidebar() {
   const navigate = useNavigate();
@@ -53,17 +57,28 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader className="border-b">
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground font-bold">
-            SB
-          </div>
+          <Logo size={32} />
           <div className="flex-1">
-            <div className="text-sm font-semibold">Study Buddy</div>
-            <div className="text-xs text-muted-foreground">Your AI tutor</div>
+            <div className="text-sm"><Wordmark /></div>
+            <div className="text-xs text-muted-foreground">Smart Learning Companion</div>
           </div>
         </div>
       </SidebarHeader>
 
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Home</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path === "/dashboard"}>
+                  <Link to="/dashboard"><Home className="h-4 w-4" /><span>Dashboard</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -82,9 +97,19 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarGroupLabel>AI tools</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path.startsWith("/notes")}>
+                  <Link to="/notes"><FileText className="h-4 w-4" /><span>Upload notes</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path.startsWith("/topic")}>
+                  <Link to="/topic"><Lightbulb className="h-4 w-4" /><span>Topic explainer</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={path.startsWith("/quiz")}>
                   <Link to="/quiz">
@@ -94,10 +119,25 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path.startsWith("/flashcards")}>
+                  <Link to="/flashcards"><Layers className="h-4 w-4" /><span>Flashcards</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path.startsWith("/mindmap")}>
+                  <Link to="/mindmap"><Network className="h-4 w-4" /><span>Mind map</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={path.startsWith("/code")}>
+                  <Link to="/code"><Code2 className="h-4 w-4" /><span>Code helper</span></Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={path.startsWith("/timetable")}>
                   <Link to="/timetable">
                     <CalendarDays className="h-4 w-4" />
-                    <span>Study timetable</span>
+                    <span>Study planner</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -149,6 +189,11 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t">
+        <Link to="/settings" className="w-full">
+          <Button variant="ghost" size="sm" className="w-full justify-start gap-2">
+            <SettingsIcon className="h-4 w-4" /> Settings
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           size="sm"
@@ -156,7 +201,7 @@ export function AppSidebar() {
           onClick={async () => {
             await supabase.auth.signOut();
             toast.success("Signed out");
-            navigate({ to: "/auth" });
+            navigate({ to: "/" });
           }}
         >
           <LogOut className="h-4 w-4" /> Sign out
