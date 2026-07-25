@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Moon, Palette, Sun } from "lucide-react";
+import { Monitor, Moon, Palette, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,11 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { THEMES, applyMode, applyTheme, readStoredMode, readStoredTheme, type ThemeId } from "@/lib/theme";
+import { THEMES, applyMode, applyTheme, readStoredMode, readStoredTheme, type Mode, type ThemeId } from "@/lib/theme";
 
 export function ThemePicker() {
-  const [theme, setTheme] = useState<ThemeId>("indigo");
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<ThemeId>("blue");
+  const [mode, setMode] = useState<Mode>("light");
 
   useEffect(() => {
     const t = readStoredTheme();
@@ -24,19 +24,22 @@ export function ThemePicker() {
     applyMode(m);
   }, []);
 
+  const cycleMode = () => {
+    const order: Mode[] = ["light", "dark", "system"];
+    const next = order[(order.indexOf(mode) + 1) % order.length];
+    setMode(next);
+    applyMode(next);
+  };
+
   return (
     <div className="flex items-center gap-1">
       <Button
         variant="ghost"
         size="icon"
         aria-label="Toggle theme mode"
-        onClick={() => {
-          const next = mode === "dark" ? "light" : "dark";
-          setMode(next);
-          applyMode(next);
-        }}
+        onClick={cycleMode}
       >
-        {mode === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        {mode === "dark" ? <Sun className="h-4 w-4" /> : mode === "system" ? <Monitor className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

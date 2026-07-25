@@ -1,16 +1,14 @@
 export const THEMES = [
-  { id: "indigo", name: "Indigo", color: "oklch(0.55 0.22 270)" },
-  { id: "emerald", name: "Emerald", color: "oklch(0.58 0.15 160)" },
-  { id: "rose", name: "Rose", color: "oklch(0.6 0.2 15)" },
-  { id: "amber", name: "Amber", color: "oklch(0.72 0.17 70)" },
-  { id: "cyan", name: "Cyan", color: "oklch(0.6 0.13 220)" },
-  { id: "slate", name: "Slate", color: "oklch(0.35 0.03 260)" },
+  { id: "blue", name: "Light Blue", color: "oklch(0.66 0.14 245)" },
+  { id: "lavender", name: "Lavender", color: "oklch(0.63 0.15 300)" },
+  { id: "mint", name: "Mint Green", color: "oklch(0.62 0.13 165)" },
+  { id: "pink", name: "Pink", color: "oklch(0.68 0.16 350)" },
 ] as const;
 
 export type ThemeId = (typeof THEMES)[number]["id"];
 
-const STORAGE_KEY = "study-buddy-theme";
-const MODE_KEY = "study-buddy-mode";
+const STORAGE_KEY = "studymate-theme";
+const MODE_KEY = "studymate-mode";
 
 export function applyTheme(id: ThemeId) {
   if (typeof document === "undefined") return;
@@ -18,19 +16,27 @@ export function applyTheme(id: ThemeId) {
   try { localStorage.setItem(STORAGE_KEY, id); } catch {}
 }
 
-export function applyMode(mode: "light" | "dark") {
+export type Mode = "light" | "dark" | "system";
+
+function resolveSystem(): "light" | "dark" {
+  if (typeof window === "undefined") return "light";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+export function applyMode(mode: Mode) {
   if (typeof document === "undefined") return;
-  document.documentElement.classList.toggle("dark", mode === "dark");
+  const effective = mode === "system" ? resolveSystem() : mode;
+  document.documentElement.classList.toggle("dark", effective === "dark");
   try { localStorage.setItem(MODE_KEY, mode); } catch {}
 }
 
 export function readStoredTheme(): ThemeId {
-  if (typeof window === "undefined") return "indigo";
+  if (typeof window === "undefined") return "blue";
   const t = localStorage.getItem(STORAGE_KEY) as ThemeId | null;
-  return t && THEMES.some((x) => x.id === t) ? t : "indigo";
+  return t && THEMES.some((x) => x.id === t) ? t : "blue";
 }
 
-export function readStoredMode(): "light" | "dark" {
+export function readStoredMode(): Mode {
   if (typeof window === "undefined") return "light";
-  return (localStorage.getItem(MODE_KEY) as "light" | "dark") || "light";
+  return (localStorage.getItem(MODE_KEY) as Mode) || "light";
 }
