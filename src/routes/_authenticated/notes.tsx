@@ -40,14 +40,40 @@ function NotesPage() {
 
   const onFile = async (f: File) => {
     setFileName(f.name);
-    if (f.type.startsWith("text/") || f.name.endsWith(".txt") || f.name.endsWith(".md")) {
-      setSource(await f.text());
-    } else {
-      toast.info("For now, please paste content from PDF/DOCX/PPT. Direct parsing coming soon.");
+    const name = f.name.toLowerCase();
+    try {
+      if (f.type.startsWith("text/") || name.endsWith(".txt") || name.endsWith(".md")) {
+        setSource(await f.text());
+      } else if (name.endsWith(".pdf") || f.type === "application/pdf") {
+        const pdfjs: any = await import("pdfjs-dist");
+        const workerSrc = (await import("pdfjs-dist/build/pdf.worker.min.mjs?url")).default;
+        pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+        const buf = await f.arrayBuffer();
+        const doc = await pdfjs.getDocument({ data: buf }).promise;
+        let text = "";
+        for (let i = 1; i <= doc.numPages; i++) {
+          const page = await doc.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items.map((it: any) => it.str).join(" ") + "\n\n";
+        }
+        setSource(text.trim());
+        toast.success(`Extracted ${doc.numPages} page(s) of text`);
+      } else if (name.endsWith(".docx")) {
+        const mammoth: any = await import(/* @vite-ignore */ "mammoth/mammoth.browser" as any);
+        const buf = await f.arrayBuffer();
+        const res = await mammoth.extractRawText({ arrayBuffer: buf });
+        setSource(res.value);
+        toast.success("Loaded DOCX text");
+      } else {
+        toast.info("Unsupported file type. Paste the content below.");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to read file");
     }
   };
 
   const disabled = source.trim().length < 10 || run.isPending;
+  const disabledReason = source.trim().length < 10 ? "Upload a file or paste at least 10 characters" : "";
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 overflow-y-auto p-6">
@@ -81,6 +107,7 @@ function NotesPage() {
             <Button disabled={disabled} variant="secondary" onClick={() => run.mutate("explain")}>Explain concepts</Button>
             <Button disabled={disabled} variant="secondary" onClick={() => run.mutate("translate")}>Translate</Button>
           </div>
+          {disabledReason && <p className="text-xs text-muted-foreground">{disabledReason}</p>}
           <div className="flex items-center gap-2">
             <Label className="text-xs text-muted-foreground">Translate to:</Label>
             <Input className="max-w-[180px]" value={translateTo} onChange={(e) => setTranslateTo(e.target.value)} />
