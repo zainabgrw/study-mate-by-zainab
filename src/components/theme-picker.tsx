@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Monitor, Moon, Palette, Sun } from "lucide-react";
+import { Moon, Palette, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,8 +25,7 @@ export function ThemePicker() {
   }, []);
 
   const cycleMode = () => {
-    const order: Mode[] = ["light", "dark", "system"];
-    const next = order[(order.indexOf(mode) + 1) % order.length];
+    const next: Mode = mode === "dark" ? "light" : "dark";
     setMode(next);
     applyMode(next);
   };
@@ -39,7 +38,7 @@ export function ThemePicker() {
         aria-label="Toggle theme mode"
         onClick={cycleMode}
       >
-        {mode === "dark" ? <Sun className="h-4 w-4" /> : mode === "system" ? <Monitor className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        {mode === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

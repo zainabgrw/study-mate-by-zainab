@@ -149,6 +149,52 @@
   --sidebar-ring: oklch(0.68 0.16 350);
 }
 
+/* Light-mode background tinting per theme — soft wash of the theme color */
+html:not(.dark)[data-theme="blue"] {
+  --background: oklch(0.975 0.03 245);
+  --card: oklch(0.99 0.015 245);
+  --popover: oklch(0.99 0.015 245);
+  --secondary: oklch(0.95 0.035 245);
+  --muted: oklch(0.95 0.03 245);
+  --border: oklch(0.9 0.035 245);
+  --input: oklch(0.9 0.035 245);
+  --sidebar: oklch(0.965 0.035 245);
+  --sidebar-border: oklch(0.9 0.035 245);
+}
+html:not(.dark)[data-theme="lavender"] {
+  --background: oklch(0.975 0.035 300);
+  --card: oklch(0.99 0.018 300);
+  --popover: oklch(0.99 0.018 300);
+  --secondary: oklch(0.95 0.04 300);
+  --muted: oklch(0.95 0.035 300);
+  --border: oklch(0.9 0.04 300);
+  --input: oklch(0.9 0.04 300);
+  --sidebar: oklch(0.965 0.04 300);
+  --sidebar-border: oklch(0.9 0.04 300);
+}
+html:not(.dark)[data-theme="mint"] {
+  --background: oklch(0.975 0.035 165);
+  --card: oklch(0.99 0.018 165);
+  --popover: oklch(0.99 0.018 165);
+  --secondary: oklch(0.95 0.04 165);
+  --muted: oklch(0.95 0.035 165);
+  --border: oklch(0.9 0.04 165);
+  --input: oklch(0.9 0.04 165);
+  --sidebar: oklch(0.965 0.04 165);
+  --sidebar-border: oklch(0.9 0.04 165);
+}
+html:not(.dark)[data-theme="pink"] {
+  --background: oklch(0.975 0.035 350);
+  --card: oklch(0.99 0.018 350);
+  --popover: oklch(0.99 0.018 350);
+  --secondary: oklch(0.95 0.04 350);
+  --muted: oklch(0.95 0.035 350);
+  --border: oklch(0.9 0.04 350);
+  --input: oklch(0.9 0.04 350);
+  --sidebar: oklch(0.965 0.04 350);
+  --sidebar-border: oklch(0.9 0.04 350);
+}
+
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
