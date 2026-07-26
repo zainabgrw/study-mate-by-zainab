@@ -4,12 +4,13 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Lightbulb, Loader2 } from "lucide-react";
+import { Lightbulb, Loader2, Download } from "lucide-react";
 import { explainTopic } from "@/lib/tools.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { downloadStudyPdf } from "@/lib/pdf";
 
 export const Route = createFileRoute("/_authenticated/topic")({
   head: () => ({ meta: [
@@ -53,7 +54,13 @@ function TopicPage() {
 
       {gen.data && (
         <Card className="animate-in-up">
-          <CardContent className="prose prose-sm max-w-none pt-6 dark:prose-invert">
+          <CardHeader className="flex flex-row items-center justify-between pb-0">
+            <div className="text-sm font-medium text-muted-foreground">AI explanation</div>
+            <Button size="sm" variant="outline" onClick={() => downloadStudyPdf({ title: topic, subtitle: "Topic explanation", markdown: gen.data!.markdown })}>
+              <Download className="mr-1 h-4 w-4" /> Download PDF
+            </Button>
+          </CardHeader>
+          <CardContent className="prose prose-sm max-w-none pt-4 dark:prose-invert">
             <ReactMarkdown>{gen.data.markdown}</ReactMarkdown>
           </CardContent>
         </Card>

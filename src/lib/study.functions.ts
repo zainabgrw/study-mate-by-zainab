@@ -6,7 +6,7 @@ import { createLovableGateway } from "@/lib/ai-gateway.server";
 
 const QuizInput = z.object({
   topic: z.string().min(2).max(200),
-  count: z.number().int().min(1).max(10).default(5),
+  count: z.number().int().min(1).max(30).default(5),
 });
 
 export const generateQuiz = createServerFn({ method: "POST" })
@@ -55,6 +55,9 @@ const TimetableInput = z.object({
   goal: z.string().min(2).max(300),
   days: z.number().int().min(1).max(30).default(7),
   hoursPerDay: z.number().min(0.5).max(12).default(2),
+  subjects: z.array(z.string().min(1).max(80)).max(20).default([]),
+  examDate: z.string().max(40).optional(),
+  startDate: z.string().max(40).optional(),
 });
 
 export const generateTimetable = createServerFn({ method: "POST" })
@@ -62,10 +65,17 @@ export const generateTimetable = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => TimetableInput.parse(input))
   .handler(async ({ data, context }) => {
     const gateway = createLovableGateway();
-    const prompt = `Design a study timetable for a university student.
+    const subjectLine = data.subjects.length ? `Subjects to cover: ${data.subjects.join(", ")}` : "";
+    const examLine = data.examDate ? `Exam date: ${data.examDate}` : "";
+    const startLine = data.startDate ? `Start date: ${data.startDate}` : "";
+    const prompt = `Design a personalized study timetable for a university student.
 Goal: ${data.goal}
 Duration: ${data.days} days
 Hours per day: ${data.hoursPerDay}
+${subjectLine}
+${examLine}
+${startLine}
+Distribute subjects sensibly across days, mix hard and easy topics, include short breaks and revision sessions, and add a final review day before the exam if provided.
 Return ONLY valid JSON (no fences, no commentary) shaped as:
 {"days":[{"day":"Day 1","focus":"...","blocks":[{"time":"09:00-10:00","task":"..."}]}]}`;
     const { text } = await generateText({
