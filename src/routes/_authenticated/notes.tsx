@@ -4,13 +4,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { FileText, Loader2, Upload } from "lucide-react";
+import { FileText, Loader2, Upload, Download } from "lucide-react";
 import { notesAssist } from "@/lib/tools.functions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { downloadStudyPdf } from "@/lib/pdf";
 
 type Action = "summarize" | "keypoints" | "explain" | "translate";
 
@@ -94,7 +95,13 @@ function NotesPage() {
       )}
       {run.data && (
         <Card className="animate-in-up">
-          <CardContent className="prose prose-sm max-w-none pt-6 dark:prose-invert">
+          <CardHeader className="flex flex-row items-center justify-between pb-0">
+            <div className="text-sm font-medium text-muted-foreground capitalize">{action ?? "Result"}</div>
+            <Button size="sm" variant="outline" onClick={() => downloadStudyPdf({ title: fileName || `Notes — ${action ?? "result"}`, subtitle: action ? `AI ${action}` : undefined, markdown: run.data!.markdown })}>
+              <Download className="mr-1 h-4 w-4" /> Download PDF
+            </Button>
+          </CardHeader>
+          <CardContent className="prose prose-sm max-w-none pt-4 dark:prose-invert">
             <ReactMarkdown>{run.data.markdown}</ReactMarkdown>
           </CardContent>
         </Card>
