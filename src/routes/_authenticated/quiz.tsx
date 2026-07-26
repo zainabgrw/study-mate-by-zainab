@@ -61,8 +61,8 @@ function QuizPage() {
             <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Newton's laws of motion" />
           </div>
           <div className="space-y-1.5">
-            <Label>Questions</Label>
-            <Input type="number" min={1} max={10} value={count} onChange={(e) => setCount(Number(e.target.value) || 5)} />
+            <Label>Questions (1-30)</Label>
+            <Input type="number" min={1} max={30} value={count} onChange={(e) => setCount(Math.min(30, Math.max(1, Number(e.target.value) || 5)))} />
           </div>
           <div className="flex items-end">
             <Button className="w-full" disabled={!topic.trim() || gen.isPending} onClick={() => gen.mutate()}>
