@@ -275,7 +275,7 @@ study-mate-by-zainab/
 
 **Zainab Imtiaz**
 
-Internet Technology Student
+Information Technology Student
 
 Punjab University Gujranwala Campus
 
@@ -287,5 +287,5 @@ https://github.com/zainabgrw
 
 # 📄 License
 
-This project was developed for educational purposes as part of a university assignment.
+This project was developed for educational purposes as part of a course assignment.
 
