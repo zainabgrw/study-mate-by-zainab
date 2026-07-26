@@ -16,17 +16,11 @@ export function applyTheme(id: ThemeId) {
   try { localStorage.setItem(STORAGE_KEY, id); } catch {}
 }
 
-export type Mode = "light" | "dark" | "system";
-
-function resolveSystem(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
+export type Mode = "light" | "dark";
 
 export function applyMode(mode: Mode) {
   if (typeof document === "undefined") return;
-  const effective = mode === "system" ? resolveSystem() : mode;
-  document.documentElement.classList.toggle("dark", effective === "dark");
+  document.documentElement.classList.toggle("dark", mode === "dark");
   try { localStorage.setItem(MODE_KEY, mode); } catch {}
 }
 
@@ -38,5 +32,6 @@ export function readStoredTheme(): ThemeId {
 
 export function readStoredMode(): Mode {
   if (typeof window === "undefined") return "light";
-  return (localStorage.getItem(MODE_KEY) as Mode) || "light";
+  const m = localStorage.getItem(MODE_KEY);
+  return m === "dark" ? "dark" : "light";
 }

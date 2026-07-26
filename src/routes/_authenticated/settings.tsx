@@ -82,13 +82,13 @@ function SettingsPage() {
           <div>
             <Label className="mb-2 block">Mode</Label>
             <div className="flex gap-2">
-              {(["light", "dark", "system"] as Mode[]).map((m) => (
+              {(["light", "dark"] as Mode[]).map((m) => (
                 <button
                   key={m}
                   onClick={() => { setModeState(m); applyMode(m); }}
                   className={`rounded-full border px-3 py-1.5 text-sm capitalize transition ${mode === m ? "border-primary bg-primary/10" : "hover:bg-accent/50"}`}
                 >
-                  {m === "system" ? "System default" : m}
+                  {m}
                 </button>
               ))}
             </div>
