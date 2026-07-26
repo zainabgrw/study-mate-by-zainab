@@ -59,7 +59,7 @@ function NotesPage() {
         setSource(text.trim());
         toast.success(`Extracted ${doc.numPages} page(s) of text`);
       } else if (name.endsWith(".docx")) {
-        const mammoth: any = await import("mammoth/mammoth.browser");
+        const mammoth: any = await import(/* @vite-ignore */ "mammoth/mammoth.browser" as any);
         const buf = await f.arrayBuffer();
         const res = await mammoth.extractRawText({ arrayBuffer: buf });
         setSource(res.value);
