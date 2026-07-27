@@ -198,15 +198,6 @@ Guidelines:
 
 ![Quiz Generator](./images/quiz%20generator.png)
 
-
-## 💡 Topic Explainer
-
-![Topic Explainer](images/topic-explainer.png)
-
----
-
-
-
 ---
 
 # 🚀 Running the Project
