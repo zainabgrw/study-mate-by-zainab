@@ -174,14 +174,30 @@ Guidelines:
 - Lovable Hosting
 
 ---
-
-# 📷 Application Screenshots
+# 📸 Application Screenshots
 
 ## 🏠 Dashboard
 
-![Dashboard](images/dashboard.png)
+![Dashboard](./images/Dashboard.png)
 
 ---
+
+## 💡 Topic Explainer
+
+![Topic Explainer](./images/AI%20chat%20.png)
+
+---
+
+## 🧠 Mind Map Generator
+
+![Mind Map](./images/Mindmap.png)
+
+---
+
+## 📝 Quiz Generator
+
+![Quiz Generator](./images/quiz%20generator.png)
+
 
 ## 💡 Topic Explainer
 
@@ -189,15 +205,7 @@ Guidelines:
 
 ---
 
-## 🧠 Mind Map Generator
 
-![Mind Map](images/mindmap.png)
-
----
-
-## 📝 Quiz Generator
-
-![Quiz Generator](images/quiz-generator.png)
 
 ---
 
